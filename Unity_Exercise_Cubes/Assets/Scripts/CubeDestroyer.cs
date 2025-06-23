@@ -1,28 +1,41 @@
+using System;
 using UnityEngine;
 
 public class CubeDestroyer : MonoBehaviour
 {
-    [SerializeField] private GameObject _cubePrefab;
-    [SerializeField] private Transform _transform;
+    [SerializeField] private RaycastDrawer _raycastDrawer;
+    [SerializeField] private Collider _collider;
+    //[SerializeField] private float _startingSpawnChance = 100.0f;
+
+    private float _currentSpawnChance;
+
+    public event Action Destroying;
+    //public event Action<float> SpawnRateChanged;
 
     private void Awake()
     {
-        _transform = GetComponent<Transform>();
-        //_transform.localScale = (transform.localScale / 2);
+        //_currentSpawnChance = _startingSpawnChance;
     }
 
-    private void OnMouseDown()
+    private void OnEnable()
     {
-        for (int i = 0; i < Random.Range(2,6); i++)
+        _raycastDrawer.RaycastHited += OnRaycastHit;
+    }
+
+    private void OnDisable()
+    {
+        _raycastDrawer.RaycastHited -= OnRaycastHit;
+    }
+
+    private void OnRaycastHit(RaycastHit hit)
+    {
+        _collider = GetComponent<Collider>();
+
+        if (hit.collider == _collider)
         {
-            GameObject NextCube = Instantiate(_cubePrefab);
+            Destroying?.Invoke();
+            //SpawnRateChanged?.Invoke(_currentSpawnChance / 2);
+            Destroy(gameObject);
         }
-
-        Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        
     }
 }
