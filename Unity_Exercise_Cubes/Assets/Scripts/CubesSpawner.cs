@@ -3,6 +3,7 @@ using UnityEngine;
 public class CubesSpawner : MonoBehaviour
 {
     [SerializeField] private CubeDestroyer _cubeDestroyer;
+    [SerializeField] private int _destroyIteration;
 
     private void Awake()
     {
@@ -21,15 +22,30 @@ public class CubesSpawner : MonoBehaviour
 
     private void SpawnCube()
     {
-        for (int i = 0; i < Random.Range(2, 6); i++)
+        int minSpawnChanse = 0;
+        int maxSpawnChanse = 100;
+
+        if (CalculateSpanwChanse(_destroyIteration) >= Random.Range(minSpawnChanse, maxSpawnChanse))
         {
-            GameObject NextCube = Instantiate(gameObject);
-            NextCube.transform.localScale = NextCube.transform.localScale / 2;
+            _destroyIteration++;
+
+            for (int i = 0; i < Random.Range(2, 6); i++)
+            {
+                GameObject NextCube = Instantiate(gameObject);
+                NextCube.transform.localScale = NextCube.transform.localScale / 2;
+            }
         }
     }
 
-    private void CheckSpanwChanse()
+    private int CalculateSpanwChanse(int destroyIteration)
     {
+        int spanwChanse = 100;
 
+        for (int i = 0; i < destroyIteration; i++)
+        {
+            spanwChanse /= 2;
+        }
+
+        return spanwChanse;
     }
 }
