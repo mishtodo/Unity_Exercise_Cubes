@@ -2,37 +2,47 @@ using UnityEngine;
 
 public class CubesSpawner : MonoBehaviour
 {
-    [SerializeField] private CubeDestroyer _cubeDestroyer;
-    [SerializeField] private int _destroyIteration;
-
-    private void Awake()
-    {
-        _cubeDestroyer = GetComponent<CubeDestroyer>();
-    }
+    [SerializeField] private Raycaster _raycaster;
+    [SerializeField] private GameObject _cubePrefab;
+    [SerializeField] private int _destroyCounts;
 
     private void OnEnable()
     {
-        _cubeDestroyer.Destroying += SpawnCube;
+        _raycaster.RaycastHited += SpawnCube;
     }
 
     private void OnDisable()
     {
-        _cubeDestroyer.Destroying -= SpawnCube;
+        _raycaster.RaycastHited -= SpawnCube;
     }
 
-    private void SpawnCube()
+    private void SpawnCube(RaycastHit hit)
     {
         int minSpawnChanse = 0;
         int maxSpawnChanse = 100;
 
-        if (CalculateSpanwChanse(_destroyIteration) >= Random.Range(minSpawnChanse, maxSpawnChanse))
-        {
-            _destroyIteration++;
+        Cube cube = hit.collider.gameObject.GetComponent<Cube>();
 
-            for (int i = 0; i < Random.Range(2, 6); i++)
+        _destroyCounts = cube.GetDestroyCounts();
+
+        if (CalculateSpanwChanse(_destroyCounts) >= Random.Range(minSpawnChanse, maxSpawnChanse))
+        {
+            int minCubesAmount = 2;
+            int maxCubesAmount = 6;
+            int localScaleMultyplier = 2;
+
+            _destroyCounts++;
+
+            for (int i = 0; i < Random.Range(minCubesAmount, maxCubesAmount); i++)
             {
-                GameObject NextCube = Instantiate(gameObject);
-                NextCube.transform.localScale = NextCube.transform.localScale / 2;
+                GameObject NextCube = Instantiate(_cubePrefab, hit.collider.transform.localPosition, Quaternion.identity);
+
+                for (int j = 0; j < _destroyCounts; j++)
+                {
+                    NextCube.transform.localScale = NextCube.transform.localScale / localScaleMultyplier;
+                }  
+
+                NextCube.GetComponent<Cube>().SetDestroyCounts(_destroyCounts);
             }
         }
     }
@@ -40,10 +50,11 @@ public class CubesSpawner : MonoBehaviour
     private int CalculateSpanwChanse(int destroyIteration)
     {
         int spanwChanse = 100;
+        int spawnDeacreseMultyplier = 2;
 
         for (int i = 0; i < destroyIteration; i++)
         {
-            spanwChanse /= 2;
+            spanwChanse /= spawnDeacreseMultyplier;
         }
 
         return spanwChanse;
