@@ -506,7 +506,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explodionPower: 10
-  _cubesSpawner: {fileID: 668432584}
 --- !u!114 &668432584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,9 +518,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9af42f899e48048992a477033d78e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycaster: {fileID: 963194229}
-  _nextCube: {fileID: 0}
-  _destroyCounts: 0
 --- !u!114 &668432585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,10 +527,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 668432581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f4a980b8a635ce4596c08dd11c566da, type: 3}
+  m_Script: {fileID: 11500000, guid: 30aa9dbe2c521e94f8ecd95e8fb44fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _raycaster: {fileID: 963194229}
+  _cubesSpawner: {fileID: 668432584}
+  _cubeExploder: {fileID: 668432583}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 963194227}
-  _mouseInput: {fileID: 963194230}
+  _inputReader: {fileID: 963194230}
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,7 +749,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c555cb49683ba14480df8c52abc027b, type: 3}
+  m_Script: {fileID: 11500000, guid: 4636c56cbd2916b40b2924c9eb28c3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1262952580 stripped
@@ -830,7 +828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7553599882302604873, guid: 00eab39c0be555744a9f661d3cf5893a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7553599882302604873, guid: 00eab39c0be555744a9f661d3cf5893a, type: 3}
       propertyPath: m_LocalPosition.y

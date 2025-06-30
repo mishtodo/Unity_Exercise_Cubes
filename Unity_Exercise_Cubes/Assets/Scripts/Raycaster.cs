@@ -1,23 +1,23 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera), typeof(MouseInput))]
+[RequireComponent(typeof(Camera), typeof(InputReader))]
 public class Raycaster : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private Ray _ray;
-    [SerializeField] private MouseInput _mouseInput;
+    [SerializeField] private InputReader _inputReader;
 
     public event Action<Cube> CubeHitted;
 
     private void OnEnable()
     {
-        _mouseInput.MouseButtonPressed += CastRay;
+        _inputReader.Clicked += CastRay;
     }
 
     private void OnDisable()
     {
-        _mouseInput.MouseButtonPressed -= CastRay;
+        _inputReader.Clicked -= CastRay;
     }
 
     private void CastRay(Vector3 mousePosition)
@@ -27,7 +27,8 @@ public class Raycaster : MonoBehaviour
 
         if (Physics.Raycast(_ray, out hit, Mathf.Infinity))
         {
-            CubeHitted?.Invoke(hit.collider.gameObject.GetComponent<Cube>());
+            Cube cube = hit.collider.gameObject.GetComponent<Cube>();
+            CubeHitted?.Invoke(cube);
         }
     }
 }

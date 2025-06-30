@@ -1,62 +1,39 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CubesSpawner : MonoBehaviour
 {
-    [SerializeField] private Raycaster _raycaster;
-
-    public event Action<Cube> CubeSpawned;
-
-    private void OnEnable()
+    private Cube SpawnSingleCube(Cube cube)
     {
-        _raycaster.CubeHitted += SpawnCube;
+        Cube nextCube;
+        int localScaleMultyplier = 2;
+        int nextDestroyCount = cube.DestroyCounts + 1;
+
+        nextCube = Instantiate<Cube>(cube, cube.transform.localPosition, Quaternion.identity);
+        nextCube.enabled = true;
+        nextCube.transform.localScale = nextCube.transform.localScale / localScaleMultyplier;
+        nextCube.InitializeDestroyCounts(nextDestroyCount);
+
+        return nextCube;
     }
 
-    private void OnDisable()
+    public void DestroyCube(Cube cube)
     {
-        _raycaster.CubeHitted -= SpawnCube;
+        Destroy(cube.gameObject);
     }
 
-    private void SpawnCube(Cube cube)
+    public List<Cube> SpawnCubes(Cube cube)
     {
-        int minSpawnChanse = 0;
-        int maxSpawnChanse = 100;
+        List<Cube> newCubes = new List<Cube>();
+        int minCubesAmount = 2;
+        int maxCubesAmount = 6;
 
-        int destroyCounts = cube.DestroyCounts;
-
-        if (CalculateSpanwChanse(destroyCounts) >= UnityEngine.Random.Range(minSpawnChanse, maxSpawnChanse))
+        for (int i = 0; i < Random.Range(minCubesAmount, maxCubesAmount + 1); i++)
         {
-            int minCubesAmount = 2;
-            int maxCubesAmount = 6;
-            int localScaleMultyplier = 2;
-
-            destroyCounts++;
-
-            for (int i = 0; i < UnityEngine.Random.Range(minCubesAmount, maxCubesAmount); i++)
-            {
-                Cube NextCube = Instantiate<Cube>(cube, cube.transform.localPosition, Quaternion.identity);
-
-                NextCube.enabled = true;
-
-                NextCube.transform.localScale = NextCube.transform.localScale / localScaleMultyplier;
-
-                NextCube.InitializeDestroyCounts(destroyCounts);
-
-                CubeSpawned?.Invoke(NextCube); 
-            }
-        }
-    }
-
-    private int CalculateSpanwChanse(int destroyIteration)
-    {
-        int spanwChanse = 100;
-        int spawnDeacreseMultyplier = 2;
-
-        for (int i = 0; i < destroyIteration; i++)
-        {
-            spanwChanse /= spawnDeacreseMultyplier;
+            newCubes.Add(SpawnSingleCube(cube));
         }
 
-        return spanwChanse;
+        return newCubes.ToList();
     }
 }
