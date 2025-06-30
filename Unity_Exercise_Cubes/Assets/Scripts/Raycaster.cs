@@ -8,7 +8,7 @@ public class Raycaster : MonoBehaviour
     [SerializeField] private Ray _ray;
     [SerializeField] private MouseInput _mouseInput;
 
-    public event Action<RaycastHit> RaycastHited;
+    public event Action<Cube> CubeHitted;
 
     private void OnEnable()
     {
@@ -27,7 +27,7 @@ public class Raycaster : MonoBehaviour
 
         if (Physics.Raycast(_ray, out hit, Mathf.Infinity))
         {
-            RaycastHited?.Invoke(hit);    
+            CubeHitted?.Invoke(hit.collider.gameObject.GetComponent<Cube>());
         }
     }
 }

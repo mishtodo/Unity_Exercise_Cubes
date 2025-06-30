@@ -1,21 +1,44 @@
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CubesSpawner))]
 public class CubeExploder: MonoBehaviour
 {
-    [SerializeField] private Raycaster _raycaster;
+    [SerializeField] private float _explodionPower = 7.5f;
+    [SerializeField] private CubesSpawner _cubesSpawner;
+
+    private List<Cube> _cubes = new List<Cube>();
 
     private void OnEnable()
-    {
-        _raycaster.RaycastHited += OnRaycastHit;
+    { 
+        _cubesSpawner.CubeSpawned += AddCubeToList;
     }
 
     private void OnDisable()
     {
-        _raycaster.RaycastHited -= OnRaycastHit;
+        _cubesSpawner.CubeSpawned -= AddCubeToList;
     }
 
-    private void OnRaycastHit(RaycastHit hit)
+    private void FixedUpdate()
     {
-        Destroy(hit.collider.gameObject);
+        if (_cubes.Count > 0)
+        {
+            foreach (Cube cube in _cubes)
+            {
+                ExplodeCube(cube);
+            }
+
+            _cubes.Clear();
+        }
+    }
+
+    private void AddCubeToList(Cube cube)
+    {
+        _cubes.Add(cube);
+    }
+
+    private void ExplodeCube(Cube cube)
+    {
+        cube.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Random.onUnitSphere * _explodionPower, ForceMode.Impulse);
     }
 }

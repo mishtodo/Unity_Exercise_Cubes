@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private int _destroyCounts;
+    public int DestroyCounts { get; private set; }
 
-    public void SetDestroyCounts(int destroyCounts) 
+    public void InitializeDestroyCounts(int destroyCounts) 
     {
-        _destroyCounts = destroyCounts;
-    }
-
-    public int GetDestroyCounts()
-    {
-        return _destroyCounts;
+        DestroyCounts = destroyCounts;
     }
 }
