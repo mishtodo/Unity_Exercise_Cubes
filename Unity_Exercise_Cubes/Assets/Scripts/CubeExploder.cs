@@ -4,8 +4,8 @@ public class CubeExploder: MonoBehaviour
 {
     [SerializeField] private float _explodionPower = 7.5f;
 
-    public void ExplodeCube(Cube cube)
+    public void ExplodeCube(Rigidbody cubeRigedbody)
     {
-        cube.gameObject.GetComponent<Rigidbody>().AddRelativeForce(Random.onUnitSphere * _explodionPower, ForceMode.Impulse);
+        cubeRigedbody.AddRelativeForce(Random.onUnitSphere * _explodionPower, ForceMode.Impulse);
     }
 }

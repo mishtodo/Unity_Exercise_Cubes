@@ -26,7 +26,7 @@ public class CubesBehaviour : MonoBehaviour
         int minSpawnChanse = 0;
         int maxSpawnChanse = 100;
 
-        if (CalculateSpanwChanse(cube.DestroyCounts) >= Random.Range(minSpawnChanse, maxSpawnChanse))
+        if (CalculateSpanwChanse(cube.DivisionChance) >= Random.Range(minSpawnChanse, maxSpawnChanse))
         {
             List<Cube> newCubes = _cubesSpawner.SpawnCubes(cube);
             ExplodeCubes(newCubes.ToList());
@@ -37,16 +37,16 @@ public class CubesBehaviour : MonoBehaviour
     {
         foreach (Cube cube in cubes)
         {
-            _cubeExploder.ExplodeCube(cube);
+            _cubeExploder.ExplodeCube(cube.Rigidbody);
         }
     }
 
-    private int CalculateSpanwChanse(int destroyIteration)
+    private int CalculateSpanwChanse(int divisionChance)
     {
         int spanwChanse = 100;
         int spawnDeacreseMultyplier = 2;
 
-        for (int i = 0; i < destroyIteration; i++)
+        for (int i = 0; i < divisionChance; i++)
         {
             spanwChanse /= spawnDeacreseMultyplier;
         }

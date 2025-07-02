@@ -1,11 +1,25 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Transform),typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    public int DestroyCounts { get; private set; }
+    public Transform Transform { get; private set; }
+    public Rigidbody Rigidbody { get; private set; }
+    public int DivisionChance { get; private set; }
 
-    public void InitializeDestroyCounts(int destroyCounts) 
+    private void Awake()
     {
-        DestroyCounts = destroyCounts;
+        Transform = GetComponent<Transform>();
+        Rigidbody = GetComponent<Rigidbody>();
+    }
+
+    public void InitializeDestroyCounts(int divisionChance) 
+    {
+        DivisionChance = divisionChance;
+    }
+
+    public void InitializeTransformScale(Vector3 localScale)
+    {
+        Transform.localScale = localScale;
     }
 }

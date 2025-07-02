@@ -27,8 +27,12 @@ public class Raycaster : MonoBehaviour
 
         if (Physics.Raycast(_ray, out hit, Mathf.Infinity))
         {
-            Cube cube = hit.collider.gameObject.GetComponent<Cube>();
-            CubeHitted?.Invoke(cube);
+            Cube cube;
+
+            if (hit.collider.gameObject.TryGetComponent<Cube>(out cube))
+            {
+                CubeHitted?.Invoke(cube);
+            }
         }
     }
 }

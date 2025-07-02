@@ -4,20 +4,6 @@ using UnityEngine;
 
 public class CubesSpawner : MonoBehaviour
 {
-    private Cube SpawnSingleCube(Cube cube)
-    {
-        Cube nextCube;
-        int localScaleMultyplier = 2;
-        int nextDestroyCount = cube.DestroyCounts + 1;
-
-        nextCube = Instantiate<Cube>(cube, cube.transform.localPosition, Quaternion.identity);
-        nextCube.enabled = true;
-        nextCube.transform.localScale = nextCube.transform.localScale / localScaleMultyplier;
-        nextCube.InitializeDestroyCounts(nextDestroyCount);
-
-        return nextCube;
-    }
-
     public void DestroyCube(Cube cube)
     {
         Destroy(cube.gameObject);
@@ -35,5 +21,19 @@ public class CubesSpawner : MonoBehaviour
         }
 
         return newCubes.ToList();
+    }
+
+    private Cube SpawnSingleCube(Cube cube)
+    {
+        Cube nextCube;
+        int localScaleMultyplier = 2;
+        int nextDivisionChance = cube.DivisionChance + 1;
+
+        nextCube = Instantiate<Cube>(cube, cube.transform.localPosition, Quaternion.identity);
+        nextCube.enabled = true;
+        nextCube.InitializeTransformScale(nextCube.Transform.localScale / localScaleMultyplier);
+        nextCube.InitializeDestroyCounts(nextDivisionChance);
+
+        return nextCube;
     }
 }
