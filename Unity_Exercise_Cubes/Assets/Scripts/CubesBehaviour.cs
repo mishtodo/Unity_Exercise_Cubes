@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CubesSpawner), typeof(CubeExploder))]
@@ -27,17 +28,26 @@ public class CubesBehaviour : MonoBehaviour
 
         if (CalculateSpanwChanse(cube.DivisionChance) >= Random.Range(minSpawnChanse, maxSpawnChanse))
         {
-            _cubesSpawner.SpawnCubes(cube);
+            List<Cube> newCubes = _cubesSpawner.SpawnCubes(cube);
+            ExplodeSpawnedCubes(newCubes.ToList());
         }
         else
         {
-            ExplodeCube(cube);
+            Explode(cube);
         }
     }
 
-    private void ExplodeCube(Cube cube)
+    private void Explode(Cube cube)
     {
         _cubeExploder.Explode(cube);
+    }
+
+    private void ExplodeSpawnedCubes(List<Cube> cubes)
+    {
+        foreach (Cube cube in cubes)
+        {
+            _cubeExploder.ExplodeSpawnedCube(cube.Rigidbody);
+        }
     }
 
     private int CalculateSpanwChanse(int divisionChance)

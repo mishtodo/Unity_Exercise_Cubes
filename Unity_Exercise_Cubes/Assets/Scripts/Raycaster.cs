@@ -5,8 +5,9 @@ using UnityEngine;
 public class Raycaster : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
-    [SerializeField] private Ray _ray;
     [SerializeField] private InputReader _inputReader;
+
+    private Ray _ray;
 
     public event Action<Cube> CubeHitted;
 
